@@ -8,7 +8,6 @@ class FormInfoClass {
     private $email;
     private $address;
 
-    // Getter and Setter methods
     public function setLastName($last_name) {
         $this->last_name = $last_name;
     }
@@ -17,7 +16,6 @@ class FormInfoClass {
         return $this->last_name;
     }
 
-    // Implement getter and setter for other properties
     public function setFirstName($first_name) {
         $this->first_name = $first_name;
     }
@@ -67,10 +65,8 @@ class FormInfoClass {
     }
 }
 
-// Create an instance of FormInfoClass
 $form_info = new FormInfoClass();
 
-// Set values from the form data
 $form_info->setLastName($_POST['last_name']);
 $form_info->setFirstName($_POST['first_name']);
 $form_info->setMiddleInitial($_POST['middle_initial']);
@@ -79,7 +75,6 @@ $form_info->setContactNo($_POST['contact_no']);
 $form_info->setEmail($_POST['email']);
 $form_info->setAddress($_POST['address']);
 
-// Display the output
 echo "<style>
         body {
             font-family: Arial, sans-serif;

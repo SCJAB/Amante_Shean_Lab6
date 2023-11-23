@@ -28,7 +28,7 @@
 
         <label>Address</label>
         <input type="text" name="address" required placeholder="*" class="placeholder-red"><br>
-<a href="./index.php"></a>
+
         <input type="submit" value="Submit">
     </form>
 </body>

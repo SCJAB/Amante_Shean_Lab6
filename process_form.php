@@ -1,4 +1,6 @@
 <?php
+session_start();
+include 'database.php';
 class FormInfoClass {
     private $last_name;
     private $first_name;
@@ -65,78 +67,43 @@ class FormInfoClass {
     }
 }
 
-$form_info = new FormInfoClass();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $form_info = new FormInfoClass();
 
-$form_info->setLastName($_POST['last_name']);
-$form_info->setFirstName($_POST['first_name']);
-$form_info->setMiddleInitial($_POST['middle_initial']);
-$form_info->setAge($_POST['age']);
-$form_info->setContactNo($_POST['contact_no']);
-$form_info->setEmail($_POST['email']);
-$form_info->setAddress($_POST['address']);
+    $form_info->setLastName($_POST['last_name']);
+    $form_info->setFirstName($_POST['first_name']);
+    $form_info->setMiddleInitial($_POST['middle_initial']);
+    $form_info->setAge($_POST['age']);
+    $form_info->setContactNo($_POST['contact_no']);
+    $form_info->setEmail($_POST['email']);
+    $form_info->setAddress($_POST['address']);
 
-echo "<style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: rgb(211, 211, 255);
-            margin: 0;
-            padding: 20px;
-        }
+    $_SESSION['form_data'] = [
+        'last_name' => $form_info->getLastName(),
+        'first_name' => $form_info->getFirstName(),
+        'middle_initial' => $form_info->getMiddleInitial(),
+        'age' => $form_info->getAge(),
+        'contact_no' => $form_info->getContactNo(),
+        'email' => $form_info->getEmail(),
+        'address' => $form_info->getAddress()
+    ];
 
-        h2 {
-            color: #333;
-        }
+    $sql = "INSERT INTO registration_data (last_name, first_name, middle_initial, age, contact_no, email, address)
+    VALUES ('{$form_info->getLastName()}',
+            '{$form_info->getFirstName()}',
+            '{$form_info->getMiddleInitial()}',
+            '{$form_info->getAge()}',
+            '{$form_info->getContactNo()}',
+            '{$form_info->getEmail()}',
+            '{$form_info->getAddress()}')";
 
-        .details {
-            margin-top: 20px;
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.534);
-        }
+    if ($conn->query($sql) === TRUE) {
+        header("Location: confirmation.php");
+        exit();
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
 
-        .details label {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .details p {
-            margin: 5px 0;
-        }
-
-        button{
-            padding: 10px;
-            margin-top: 40px;
-            border-radius: 10px;
-            cursor: pointer;
-            border: none;
-            background-color: darkslategrey;
-            color: white;
-        }
-      </style>";
-
-echo "<h2>Registration Details</h2>";
-echo "<div class='details'>";
-echo "<label>Last Name:</label>";
-echo "<p>" . $form_info->getLastName() . "</p>";
-
-echo "<label>First Name:</label>";
-echo "<p>" . $form_info->getFirstName() . "</p>";
-
-echo "<label>Middle Initial:</label>";
-echo "<p>" . $form_info->getMiddleInitial() . "</p>";
-
-echo "<label>Age:</label>";
-echo "<p>" . $form_info->getAge() . "</p>";
-
-echo "<label>Contact No.:</label>";
-echo "<p>" . $form_info->getContactNo() . "</p>";
-
-echo "<label>Email:</label>";
-echo "<p>" . $form_info->getEmail() . "</p>";
-
-echo "<label>Address:</label>";
-echo "<p>" . $form_info->getAddress() . "</p>";
-echo "</div>";
-
-echo "<a href='./index.php'><button>Back</button></a>";
+    $conn->close();
+}
 ?>

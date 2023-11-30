@@ -88,8 +88,6 @@ if (isset($_SESSION['form_data'])) {
 
     echo "</body>";
     echo "</html>";
-
-    unset($_SESSION['form_data']);
 } else {
     echo "Form data not found.";
 }
